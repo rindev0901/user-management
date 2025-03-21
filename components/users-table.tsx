@@ -35,7 +35,7 @@ export function UsersTable() {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users"
+        "https://67dd033ce00db03c4069c5ee.mockapi.io/api/v1/users"
       );
 
       if (!response.ok) {
@@ -61,7 +61,7 @@ export function UsersTable() {
     try {
       setDeleting(id);
       const response = await fetch(
-        `https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users/${id}`,
+        `https://67dd033ce00db03c4069c5ee.mockapi.io/api/v1/users/${id}`,
         {
           method: "DELETE",
         }
