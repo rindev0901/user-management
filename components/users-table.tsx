@@ -1,87 +1,99 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Edit, Trash2, Loader2 } from "lucide-react"
-import Link from "next/link"
-import { useToast } from "@/hooks/use-toast"
+import { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Edit, Trash2, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 // Update the User interface to match the new data structure
 interface User {
-  id: string
-  mssv: string
-  hoten: string
-  lop: string
-  hinhanh: string
+  id: string;
+  mssv: string;
+  hoten: string;
+  lop: string;
+  hinhanh: string;
 }
 
 export function UsersTable() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [deleting, setDeleting] = useState<string | null>(null)
-  const { toast } = useToast()
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const fetchUsers = async () => {
     try {
-      setLoading(true)
-      const response = await fetch("https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users")
+      setLoading(true);
+      const response = await fetch(
+        "https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users"
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch users")
+        throw new Error("Failed to fetch users");
       }
 
-      const data = await response.json()
-      setUsers(data)
-      setError(null)
+      const data = await response.json();
+      setUsers(data);
+      setError(null);
     } catch (err) {
-      setError("Failed to load users. Please try again later.")
-      console.error(err)
+      setError("Failed to load users. Please try again later.");
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
 
   const handleDelete = async (id: string) => {
     try {
-      setDeleting(id)
-      const response = await fetch(`https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users/${id}`, {
-        method: "DELETE",
-      })
+      setDeleting(id);
+      const response = await fetch(
+        `https://67dcde67e00db03c40692a8a.mockapi.io/api/v1/users/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to delete user")
+        throw new Error("Failed to delete user");
       }
 
-      setUsers(users.filter((user) => user.id !== id))
+      setUsers(users.filter((user) => user.id !== id));
       toast({
         title: "User deleted",
         description: "The user has been successfully deleted.",
-      })
+      });
     } catch (err) {
       toast({
         title: "Error",
         description: "Failed to delete user. Please try again.",
         variant: "destructive",
-      })
-      console.error(err)
+      });
+      console.error(err);
     } finally {
-      setDeleting(null)
+      setDeleting(null);
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -92,7 +104,7 @@ export function UsersTable() {
           Try Again
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -110,7 +122,10 @@ export function UsersTable() {
         <TableBody>
           {users.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center py-10 text-muted-foreground">
+              <TableCell
+                colSpan={4}
+                className="text-center py-10 text-muted-foreground"
+              >
                 No users found
               </TableCell>
             </TableRow>
@@ -120,8 +135,16 @@ export function UsersTable() {
               <TableRow key={user.id}>
                 <TableCell className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={user.hinhanh} alt={user.hoten} />
-                    <AvatarFallback>{user.hoten ? user.hoten.substring(0, 2).toUpperCase() : "UN"}</AvatarFallback>
+                    <AvatarImage
+                      src={user.hinhanh}
+                      alt={user.hoten}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
+                      {user.hoten
+                        ? user.hoten.substring(0, 2).toUpperCase()
+                        : "UN"}
+                    </AvatarFallback>
                   </Avatar>
                   <span className="font-medium">{user.hoten}</span>
                 </TableCell>
@@ -156,6 +179,5 @@ export function UsersTable() {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
-
