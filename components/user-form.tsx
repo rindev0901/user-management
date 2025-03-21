@@ -172,20 +172,15 @@ export function UserForm({ userId }: UserFormProps = {}) {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="mssv" className="font-medium">
-              Student ID
+              Student Code
             </Label>
             <Input
               id="mssv"
               name="mssv"
               value={formData.mssv}
               onChange={handleChange}
-              placeholder="Enter student ID (e.g., B2012346)"
               required
             />
-            <p className="text-xs text-muted-foreground">
-              Enter a unique identifier for the student (format: B followed by 7
-              digits)
-            </p>
           </div>
 
           <div className="space-y-2">
